@@ -79,6 +79,7 @@ export default function Dashboard() {
         videos.map((items) => {
           items.uid === user.uid ? count.push(items.uid) : false;
         });
+        console.log(count)
         const options = {
           method: "PATCH",
           url: `http://localhost:3000/api/users/${id}`,
@@ -88,7 +89,7 @@ export default function Dashboard() {
           },
         };
         return await axios.request(options).then((response) => {
-          return;
+          console.log(response);
         });
       }
     }

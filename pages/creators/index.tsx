@@ -25,9 +25,21 @@ export default function Videos() {
     },
   ]);
 
-  const [UserData, setUserData] = React.useState([
+  const [UserData, setUserData] = React.useState({
+    id: null,
+    username: "",
+    email: "",
+    picture: "",
+    role: "",
+    uid: "",
+    subs: [],
+    liked_videos: [],
+    my_videos: [],
+  });
+
+  const [UserList, setUserList] = React.useState([
     {
-      id: null,
+      id: "",
       username: "",
       email: "",
       picture: "",
@@ -49,7 +61,10 @@ export default function Videos() {
         headers: { "Content-Type": "application/json" },
       };
       return await axios.request(options).then((response) => {
-        if (response.data) setUserData(response.data);
+        if (response.data) {
+          setUserData(response.data);
+          setUserList(response.data);
+        }
       });
     }
   }
@@ -107,6 +122,28 @@ export default function Videos() {
     }
   }
 
+  async function SuscribeToCreator(id: string, data: any) {
+    if (!loading) {
+      const options = {
+        method: "PATCH",
+        url: `http://localhost:3000/api/users/${id}`,
+        headers: { "Content-Type": "application/json" },
+        data: {
+          subs: [...data, id],
+        },
+      };
+
+      axios
+        .request(options)
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
+  }
+
   React.useEffect(() => {
     GetVideos();
   }, [loading]);
@@ -132,9 +169,9 @@ export default function Videos() {
           <div className="video_tool_card">
             <Typography>Creators</Typography>
 
-            {UserData.map((data) => {
+            {UserList.map((data) => {
               return (
-                <>
+                <div key={data.id}>
                   {data.uid !== user.uid && (
                     <div className="profile_text_inf">
                       <List
@@ -169,16 +206,18 @@ export default function Videos() {
                       </List>
                       <Stack direction="column" spacing={2}>
                         <Button
-                          onClick={() => {}}
+                          onClick={() => {
+                            SuscribeToCreator(data.id, data.subs);
+                          }}
                           variant="outlined"
                           color="error"
                         >
                           suscribe
                         </Button>
                       </Stack>
-                    </div> 
+                    </div>
                   )}
-                </>
+                </div>
               );
             })}
           </div>
@@ -187,48 +226,44 @@ export default function Videos() {
 
             {videos.map((data) => {
               return (
-                <>
-                  <div key={data.id}>
-                    <>
-                      <List
-                        sx={{
-                          width: "100%",
-                          maxWidth: 360,
-                          bgcolor: "background.paper",
+                <div key={data.id}>
+                  <List
+                    sx={{
+                      width: "100%",
+                      maxWidth: 360,
+                      bgcolor: "background.paper",
+                    }}
+                  >
+                    <ListItem alignItems="flex-start">
+                      <ListItemText
+                        primary={data.title}
+                        secondary={
+                          <React.Fragment>
+                            <span>{data.url}</span>
+                            <span> {data.details}</span>
+                            <span> {data.creation_date}</span>
+
+                            <span> {data.uid}</span>
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+
+                    <Stack direction="row" spacing={2}>
+                      <Button
+                        onClick={() => {
+                          LikeVideos(data.id, data, user.uid);
                         }}
+                        variant="outlined"
+                        disableElevation
                       >
-                        <ListItem alignItems="flex-start">
-                          <ListItemText
-                            primary={data.title}
-                            secondary={
-                              <React.Fragment>
-                                <span>{data.url}</span>
-                                <span> {data.details}</span>
-                                <span> {data.creation_date}</span>
+                        Like
+                      </Button>
+                    </Stack>
+                  </List>
 
-                                <span> {data.uid}</span>
-                              </React.Fragment>
-                            }
-                          />
-                        </ListItem>
-
-                        <Stack direction="row" spacing={2}>
-                          <Button
-                            onClick={() => {
-                              LikeVideos(data.id, data, user.uid);
-                            }}
-                            variant="outlined"
-                            disableElevation
-                          >
-                            Like
-                          </Button>
-                        </Stack>
-                      </List>
-
-                      <Divider variant="middle" />
-                    </>
-                  </div>
-                </>
+                  <Divider variant="middle" />
+                </div>
               );
             })}
           </div>
