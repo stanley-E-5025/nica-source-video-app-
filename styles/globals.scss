@@ -1,0 +1,116 @@
+.sign_up_page_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.sign_up_form_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 5px;
+
+  select {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgb(202, 202, 202);
+    padding: 5px;
+  }
+
+  input {
+    margin: 10px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgb(202, 202, 202);
+    padding-left: 10px;
+    padding: 5px;
+  }
+  button {
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+    background: #171717ee;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+  }
+}
+
+.form_option {
+  margin-top: 20px;
+  border: none;
+  cursor: pointer;
+  background: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  color: #000;
+  font-weight: bold;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+.google {
+  display: flex;
+  align-items: center;
+  width: 150px;
+  font-weight: bold;
+  margin: 10px;
+  background-color: #fff;
+  outline: none;
+  border: none;
+  width: 220px;
+  height: 40px;
+  color: #757575;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+
+  span {
+    padding-left: 10px;
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.profile_text_inf {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  margin: 10px;
+}
+
+.video_tool_card {
+  margin-top: 20px;
+  border: solid 1px rgb(204, 204, 204);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.create_video_form {
+  display: flex;
+  flex-direction: column;
+}
+
+.video_tool_card_create {
+  margin-top: 20px;
+  border: solid 1px rgb(204, 204, 204);
+  padding: 10px;
+  border-radius: 10px;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.user_text {
+  display: flex;
+  flex-direction: column;
+}
