@@ -11,6 +11,9 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { auth } from "../../firebase-config";
+
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Dashboard() {
   const [videos, setVideos] = React.useState([
@@ -38,7 +41,7 @@ export default function Dashboard() {
     my_videos: [],
   });
 
-  const { user, loading } = UseContext();
+  const [user, loading] = useAuthState(auth);
 
   if (!loading && !user) {
     window.location.replace("/");
@@ -48,7 +51,7 @@ export default function Dashboard() {
     if (!loading) {
       const options = {
         method: "GET",
-        url: `http://localhost:3000/api/users/${user.uid}`,
+        url: `http://localhost:3000/api/users/${user?.uid}`,
         headers: { "Content-Type": "application/json" },
       };
       return await axios.request(options).then((response) => {
@@ -77,9 +80,9 @@ export default function Dashboard() {
       if (videos !== []) {
         let count: string[] = [];
         videos.map((items) => {
-          items.uid === user.uid ? count.push(items.uid) : false;
+          items.uid === user?.uid ? count.push(items.uid) : false;
         });
-        console.log(count)
+        console.log(count);
         const options = {
           method: "PATCH",
           url: `http://localhost:3000/api/users/${id}`,

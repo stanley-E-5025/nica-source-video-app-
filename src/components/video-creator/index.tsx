@@ -9,6 +9,9 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import { auth } from "../../../firebase-config";
+
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import axios from "axios";
 
@@ -26,13 +29,13 @@ export default function Videos() {
     },
   ]);
 
-  const { user, loading } = UseContext();
+  const [user, loading] = useAuthState(auth);
 
   async function UpdateUser(ID: string) {
     if (!loading) {
       const options = {
         method: "PATCH",
-        url: `http://localhost:3000/api/users/${ID}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users/${ID}`,
         headers: { "Content-Type": "application/json" },
 
         data: {
@@ -48,7 +51,7 @@ export default function Videos() {
     if (!loading) {
       const options = {
         method: "PATCH",
-        url: `http://localhost:3000/api/videos/${ID}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos/${ID}`,
         headers: { "Content-Type": "application/json" },
 
         data: {
@@ -65,7 +68,7 @@ export default function Videos() {
     if (!loading) {
       const options = {
         method: "PATCH",
-        url: `http://localhost:3000/api/videos/${ID}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos/${ID}`,
         headers: { "Content-Type": "application/json" },
 
         data: {
@@ -81,7 +84,7 @@ export default function Videos() {
     if (!loading) {
       const options = {
         method: "GET",
-        url: `http://localhost:3000/api/videos/`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos/`,
         headers: { "Content-Type": "application/json" },
       };
       return await axios.request(options).then((response) => {
@@ -102,7 +105,7 @@ export default function Videos() {
         {videos.map((data) => {
           return (
             <div key={data.id}>
-              {data.uid === user.uid && data.published && (
+              {data.uid === user?.uid && data.published && (
                 <>
                   <List
                     sx={{
@@ -150,7 +153,7 @@ export default function Videos() {
         {videos.map((data) => {
           return (
             <div key={data.id}>
-              {data.uid === user.uid && !data.published && (
+              {data.uid === user?.uid && !data.published && (
                 <>
                   <List
                     sx={{

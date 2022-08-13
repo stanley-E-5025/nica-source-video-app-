@@ -6,8 +6,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { UseContext} from "../src/context/context.provider";
+import { UseContext } from "../src/context/context.provider";
 import axios from "axios";
+
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Home: NextPage = () => {
   const [account, setAccount] = useState({
@@ -18,7 +20,7 @@ const Home: NextPage = () => {
   });
   const [show, setShow] = useState(false);
 
-  const { user, loading } = UseContext();
+  const [user, loading] = useAuthState(auth);
 
   if (!loading && user !== null) {
     window.location.replace("/");
@@ -44,7 +46,7 @@ const Home: NextPage = () => {
         console.log(data.user.uid);
         const options = {
           method: "POST",
-          url: "http://localhost:3000/api/users",
+          url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users`,
           headers: { "Content-Type": "application/json" },
           data: {
             username: account.name,
@@ -157,7 +159,7 @@ const Home: NextPage = () => {
                   setShow(!show);
                 }}
               >
-                Let's create an account! 🚀
+                {"Let's create an account!"}
               </button>
             </>
           )}

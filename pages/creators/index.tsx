@@ -11,6 +11,10 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import axios from "axios";
 
+
+import { auth} from "../../firebase-config";
+
+import { useAuthState } from "react-firebase-hooks/auth";
 export default function Videos() {
   const [videos, setVideos] = React.useState([
     {
@@ -50,14 +54,14 @@ export default function Videos() {
       my_videos: [],
     },
   ]);
+  const [user, loading] = useAuthState(auth);
 
-  const { user, loading } = UseContext();
 
   async function GetUser() {
     if (!loading) {
       const options = {
         method: "GET",
-        url: `http://localhost:3000/api/users/`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users/`,
         headers: { "Content-Type": "application/json" },
       };
       return await axios.request(options).then((response) => {
@@ -73,7 +77,7 @@ export default function Videos() {
     if (!loading) {
       const options = {
         method: "GET",
-        url: `http://localhost:3000/api/videos/`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos/`,
         headers: { "Content-Type": "application/json" },
       };
       return await axios.request(options).then((response) => {
@@ -87,7 +91,7 @@ export default function Videos() {
       console.log(uid);
       const options = {
         method: "PATCH",
-        url: `http://localhost:3000/api/users/${UserData.id}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users/${UserData.id}`,
         headers: { "Content-Type": "application/json" },
         data: { liked_videos: data, my_videos: [videos.length] },
       };
@@ -107,7 +111,7 @@ export default function Videos() {
     if (!loading) {
       const options = {
         method: "PATCH",
-        url: `http://localhost:3000/api/videos/${id}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos/${id}`,
         headers: { "Content-Type": "application/json" },
 
         data: {
@@ -126,7 +130,7 @@ export default function Videos() {
     if (!loading) {
       const options = {
         method: "PATCH",
-        url: `http://localhost:3000/api/users/${id}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users/${id}`,
         headers: { "Content-Type": "application/json" },
         data: {
           subs: [...data, id],

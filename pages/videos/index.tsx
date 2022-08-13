@@ -10,6 +10,10 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { auth} from "../../firebase-config";
+
+import { useAuthState } from "react-firebase-hooks/auth";
+
 
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
@@ -63,7 +67,7 @@ export default function Videos() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const { user, loading } = UseContext();
+  const [user, loading] = useAuthState(auth);
 
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     setVideoUpload({
@@ -82,7 +86,7 @@ export default function Videos() {
     if (!loading) {
       const options = {
         method: "POST",
-        url: `http://localhost:3000/api/videos`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos`,
         headers: { "Content-Type": "application/json" },
 
         data: {
@@ -91,7 +95,7 @@ export default function Videos() {
           title: VideoUpload.title,
           published: false,
           creation_date: new Date(),
-          uid: user.uid,
+          uid: user?.uid,
           likes: [],
         },
       };
@@ -105,7 +109,7 @@ export default function Videos() {
     if (!loading) {
       const options = {
         method: "GET",
-        url: `http://localhost:3000/api/videos/`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos/`,
         headers: { "Content-Type": "application/json" },
       };
       return await axios.request(options).then((response) => {
@@ -120,7 +124,7 @@ export default function Videos() {
     if (!loading) {
       const options = {
         method: "PATCH",
-        url: `http://localhost:3000/api/videos/${id}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos/${id}`,
         headers: { "Content-Type": "application/json" },
 
         data: {
@@ -129,7 +133,7 @@ export default function Videos() {
           title: VideoEdit.title,
           published: false,
           creation_date: new Date(),
-          uid: user.uid,
+          uid: user?.uid,
           likes: [],
         },
       };
@@ -144,7 +148,7 @@ export default function Videos() {
     if (!loading) {
       const options = {
         method: "DELETE",
-        url: `http://localhost:3000/api/videos/${id}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos/${id}`,
         headers: { "Content-Type": "application/json" },
       };
       return await axios.request(options).then(() => {
