@@ -39,31 +39,32 @@ const Home: NextPage = () => {
       [e.target.name]: e.target.value,
     });
   }
-  function CreateUser(e: React.ChangeEvent<HTMLFormElement>) {
+  async function CreateUser(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
-    createUserWithEmailAndPassword(auth, account.email, account.password)
+    await createUserWithEmailAndPassword(auth, account.email, account.password)
       .then(async (data) => {
-        console.log(data.user.uid);
-        const options = {
-          method: "POST",
-          url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users`,
-          headers: { "Content-Type": "application/json" },
-          data: {
-            username: account.name,
-            email: data.user.email,
-            picture: "",
-            role: account.role,
-            uid: data.user.uid,
-            subs: [],
-            liked_videos: [],
-            my_videos: [],
-          },
-        };
-        return await axios.request(options).then(function (response) {
-          if (response) swal("Good job!", "welcome", "success");
-          window.location.reload();
-          setShow(!show);
-        });
+        if (data.user) {
+          const options = {
+            method: "POST",
+            url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users`,
+            headers: { "Content-Type": "application/json" },
+            data: {
+              username: account.name,
+              email: data.user.email,
+              picture: "",
+              role: account.role,
+              uid: data.user.uid,
+              subs: [],
+              liked_videos: [],
+              my_videos: [],
+            },
+          };
+          return await axios.request(options).then(function (response) {
+            if (response) swal("Good job!", "welcome", "success");
+            window.location.reload();
+            setShow(!show);
+          });
+        }
       })
       .catch((e) => {
         swal("Someting went wrong", e.code, "error");

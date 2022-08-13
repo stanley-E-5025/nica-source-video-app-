@@ -105,6 +105,7 @@ export default function Dashboard() {
   React.useEffect(() => {
     GetVideos();
   }, [loading]);
+
   return (
     <>
       {!loading && user && (
