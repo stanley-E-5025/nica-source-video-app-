@@ -62,7 +62,6 @@ const Home: NextPage = () => {
             })
             .finally(() => {
               swal("Good job!", "welcome", "success");
-
               window.location.replace("/dashboard");
             });
         }
@@ -77,7 +76,7 @@ const Home: NextPage = () => {
     signInWithEmailAndPassword(auth, account.email, account.password)
       .then((data) => {
         if (data) swal("Welcome", "", "success");
-        window.location.reload();
+        window.location.replace("/dashboard");
       })
       .catch((e) => {
         swal("Someting went wrong", e.code, "error");

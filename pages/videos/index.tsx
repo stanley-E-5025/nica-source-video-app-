@@ -10,10 +10,9 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { auth} from "../../firebase-config";
+import { auth } from "../../firebase-config";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-
 
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
@@ -100,6 +99,15 @@ export default function Videos() {
         },
       };
       return await axios.request(options).then(() => {
+        setVideoUpload({
+          id: "",
+          url: "",
+          details: "",
+          title: "",
+          published: false,
+          creation_date: "",
+          uid: "",
+        });
         GetVideos();
       });
     }
@@ -168,6 +176,7 @@ export default function Videos() {
           name="title"
           variant="standard"
           placeholder="title"
+          value={VideoUpload.title}
         />
         <TextField
           onChange={handleInput}
@@ -175,6 +184,7 @@ export default function Videos() {
           name="url"
           variant="standard"
           placeholder="url"
+          value={VideoUpload.url}
         />
 
         <TextField
@@ -183,6 +193,7 @@ export default function Videos() {
           name="details"
           variant="standard"
           placeholder="details"
+          value={VideoUpload.details}
         />
         <Stack direction="row" spacing={2}>
           <Button
