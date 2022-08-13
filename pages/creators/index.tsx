@@ -11,8 +11,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import axios from "axios";
 
-
-import { auth} from "../../firebase-config";
+import { auth } from "../../firebase-config";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 export default function Videos() {
@@ -56,7 +55,6 @@ export default function Videos() {
   ]);
   const [user, loading] = useAuthState(auth);
 
-
   async function GetUser() {
     if (!loading) {
       const options = {
@@ -88,10 +86,9 @@ export default function Videos() {
 
   async function SaveLikes(data: any, uid: string) {
     if (!loading) {
-      console.log(uid);
       const options = {
         method: "PATCH",
-        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users/${UserData.id}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users/${uid}`,
         headers: { "Content-Type": "application/json" },
         data: { liked_videos: data, my_videos: [videos.length] },
       };
@@ -139,8 +136,8 @@ export default function Videos() {
 
       axios
         .request(options)
-        .then(function (response) {
-          console.log(response.data);
+        .then(function () {
+          GetUser();
         })
         .catch(function (error) {
           console.error(error);
@@ -200,7 +197,6 @@ export default function Videos() {
                                     my_videos: {data.my_videos.length}
                                   </span>
                                   <span>subs: {data.subs.length}</span>
-                                  <span>likes: {data.liked_videos.length}</span>
                                   <span>id: {data.id}</span>
                                 </span>
                               </React.Fragment>
@@ -252,6 +248,8 @@ export default function Videos() {
                         }
                       />
                     </ListItem>
+
+                    <Typography>Likes: {data.likes.length}</Typography>
 
                     <Stack direction="row" spacing={2}>
                       <Button

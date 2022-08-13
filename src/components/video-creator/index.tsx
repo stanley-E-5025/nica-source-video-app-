@@ -31,22 +31,6 @@ export default function Videos() {
 
   const [user, loading] = useAuthState(auth);
 
-  async function UpdateUser(ID: string) {
-    if (!loading) {
-      const options = {
-        method: "PATCH",
-        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users/${ID}`,
-        headers: { "Content-Type": "application/json" },
-
-        data: {
-          my_videos: true,
-        },
-      };
-      return await axios.request(options).then(() => {
-        GetVideos();
-      });
-    }
-  }
   async function PublishVideo(ID: string) {
     if (!loading) {
       const options = {

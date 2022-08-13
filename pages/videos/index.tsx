@@ -83,33 +83,36 @@ export default function Videos() {
   }
   async function CreateVideos() {
     if (!loading) {
-      const options = {
-        method: "POST",
-        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos`,
-        headers: { "Content-Type": "application/json" },
+      if (VideoUpload.url !== "" && VideoUpload.title !== "") {
+        const options = {
+          method: "POST",
+          url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos`,
+          headers: { "Content-Type": "application/json" },
 
-        data: {
-          url: VideoUpload.url,
-          details: VideoUpload.details,
-          title: VideoUpload.title,
-          published: false,
-          creation_date: new Date(),
-          uid: user?.uid,
-          likes: [],
-        },
-      };
-      return await axios.request(options).then(() => {
-        setVideoUpload({
-          id: "",
-          url: "",
-          details: "",
-          title: "",
-          published: false,
-          creation_date: "",
-          uid: "",
+          data: {
+            url: VideoUpload.url,
+            details: VideoUpload.details,
+            title: VideoUpload.title,
+            published: false,
+            creation_date: new Date(),
+            uid: user?.uid,
+            likes: [],
+          },
+        };
+
+        return await axios.request(options).then(() => {
+          setVideoUpload({
+            id: "",
+            url: "",
+            details: "",
+            title: "",
+            published: false,
+            creation_date: "",
+            uid: "",
+          });
+          GetVideos();
         });
-        GetVideos();
-      });
+      }
     }
   }
 
@@ -164,6 +167,9 @@ export default function Videos() {
       });
     }
   }
+
+
+  
   React.useEffect(() => {
     GetVideos();
   }, [loading]);

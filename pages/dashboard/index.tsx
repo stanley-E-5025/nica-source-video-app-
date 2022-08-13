@@ -47,6 +47,8 @@ export default function Dashboard() {
     window.location.replace("/");
   }
 
+  let my_video_count: object[] = [];
+
   async function GetUser() {
     if (!loading) {
       const options = {
@@ -80,9 +82,8 @@ export default function Dashboard() {
       if (videos !== []) {
         let count: string[] = [];
         videos.map((items) => {
-          items.uid === user?.uid ? count.push(items.uid) : false;
+          items.uid === user?.uid ? count.push(items.uid) : "";
         });
-        console.log(count);
         const options = {
           method: "PATCH",
           url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users/${id}`,
@@ -125,9 +126,18 @@ export default function Dashboard() {
                       <span className="user_text">
                         <span>{UserData.email}</span>
                         <span> {UserData.role}</span>
-                        <span>my_videos: {UserData.my_videos.length}</span>
+                        <>
+                          {videos.map((item) => {
+                            item.uid === user?.uid
+                              ? my_video_count.push(item)
+                              : "";
+
+                            return;
+                          })}
+                        </>
+
+                        <span>videos: {my_video_count.length}</span>
                         <span>subs: {UserData.subs.length}</span>
-                        <span>likes: {UserData.liked_videos.length}</span>
                         <span>id: {UserData.id}</span>
                       </span>
                     </React.Fragment>
