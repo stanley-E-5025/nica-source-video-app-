@@ -51,7 +51,7 @@ export default function Dashboard() {
     if (!loading) {
       const options = {
         method: "GET",
-        url: `http://localhost:3000/api/users/${user?.uid}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users/${user?.uid}`,
         headers: { "Content-Type": "application/json" },
       };
       return await axios.request(options).then((response) => {
@@ -66,7 +66,7 @@ export default function Dashboard() {
     if (!loading) {
       const options = {
         method: "GET",
-        url: `http://localhost:3000/api/videos/`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/videos/`,
         headers: { "Content-Type": "application/json" },
       };
       return await axios.request(options).then((response) => {
@@ -85,7 +85,7 @@ export default function Dashboard() {
         console.log(count);
         const options = {
           method: "PATCH",
-          url: `http://localhost:3000/api/users/${id}`,
+          url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users/${id}`,
           headers: { "Content-Type": "application/json" },
           data: {
             my_videos: count,

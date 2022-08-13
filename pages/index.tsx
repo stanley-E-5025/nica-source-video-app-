@@ -6,7 +6,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { UseContext } from "../src/context/context.provider";
 import axios from "axios";
 
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -21,10 +20,6 @@ const Home: NextPage = () => {
   const [show, setShow] = useState(false);
 
   const [user, loading] = useAuthState(auth);
-
-  if (!loading && user !== null) {
-    window.location.replace("/");
-  }
 
   function handleInputs(e: React.ChangeEvent<HTMLInputElement>) {
     setAccount({
@@ -46,7 +41,8 @@ const Home: NextPage = () => {
         if (data.user) {
           const options = {
             method: "POST",
-            url: `${process.env.NEXT_PUBLIC_DOMAIN}/api/users`,
+            url: `
+              https://nica-source-api.herokuapp.com/api/users`,
             headers: { "Content-Type": "application/json" },
             data: {
               username: account.name,
@@ -59,11 +55,16 @@ const Home: NextPage = () => {
               my_videos: [],
             },
           };
-          return await axios.request(options).then(function (response) {
-            if (response) swal("Good job!", "welcome", "success");
-            window.location.reload();
-            setShow(!show);
-          });
+          return await axios
+            .request(options)
+            .then(function () {
+              setShow(!show);
+            })
+            .finally(() => {
+              swal("Good job!", "welcome", "success");
+
+              window.location.replace("/dashboard");
+            });
         }
       })
       .catch((e) => {
@@ -83,15 +84,6 @@ const Home: NextPage = () => {
       });
   }
 
-  async function Validate() {
-    const user = await auth.currentUser;
-    if (user) {
-      window.location.replace("/dashboard");
-    }
-  }
-  useEffect(() => {
-    Validate();
-  }, [SignIn, CreateUser]);
   return (
     <>
       {!loading && !user && (
@@ -165,6 +157,19 @@ const Home: NextPage = () => {
             </>
           )}
         </div>
+      )}
+
+      {!loading && user && (
+        <>
+          <button
+            className="form_option"
+            onClick={() => {
+              window.location.replace("/dashboard");
+            }}
+          >
+            Go to dashboard
+          </button>
+        </>
       )}
     </>
   );
