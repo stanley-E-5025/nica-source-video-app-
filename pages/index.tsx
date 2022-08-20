@@ -28,12 +28,6 @@ const Home: NextPage = () => {
     });
   }
 
-  function handleSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    setAccount({
-      ...account,
-      [e.target.name]: e.target.value,
-    });
-  }
   async function CreateUser(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
     await createUserWithEmailAndPassword(auth, account.email, account.password)
@@ -89,7 +83,8 @@ const Home: NextPage = () => {
         <div className="sign_up_page_container ">
           {!show && (
             <>
-              <form className="sign_up_form_container" onSubmit={CreateUser}>
+              <form className="form_container" onSubmit={CreateUser}>
+                <span>Sign Up</span>
                 <input
                   name="name"
                   placeholder="username"
@@ -107,28 +102,23 @@ const Home: NextPage = () => {
                   placeholder="password"
                   onChange={handleInputs}
                 />
+                <button>Create Account</button>
 
-                <select name="role" onChange={handleSelect}>
-                  <option value="student">Studen</option>
-                  <option value="teacher">Teacher</option>
-                </select>
-                <button>Sign Up</button>
+                <span
+                  onClick={() => {
+                    setShow(!show);
+                  }}
+                >
+                  <p>Have an account?</p>
+                </span>
               </form>
-
-              <button
-                className="form_option"
-                onClick={() => {
-                  setShow(!show);
-                }}
-              >
-                Have an account?
-              </button>
             </>
           )}
 
           {show && (
             <>
-              <form className="sign_up_form_container" onSubmit={SignIn}>
+              <form className="form_container" onSubmit={SignIn}>
+                <span>Log In</span>
                 <input
                   name="email"
                   placeholder="email"
@@ -141,34 +131,19 @@ const Home: NextPage = () => {
                   placeholder="password"
                   onChange={handleInputs}
                 />
-
                 <button>Sign In</button>
-              </form>
 
-              <button
-                className="form_option"
-                onClick={() => {
-                  setShow(!show);
-                }}
-              >
-                {"Let's create an account!"}
-              </button>
+                <span
+                  onClick={() => {
+                    setShow(!show);
+                  }}
+                >
+                  <p>Create an account</p>
+                </span>
+              </form>
             </>
           )}
         </div>
-      )}
-
-      {!loading && user && (
-        <>
-          <button
-            className="form_option"
-            onClick={() => {
-              window.location.replace("/dashboard");
-            }}
-          >
-            Go to dashboard
-          </button>
-        </>
       )}
     </>
   );
